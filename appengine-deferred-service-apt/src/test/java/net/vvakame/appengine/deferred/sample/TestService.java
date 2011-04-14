@@ -1,5 +1,6 @@
 package net.vvakame.appengine.deferred.sample;
 
+import net.vvakame.appengine.deferred.annotation.Deferred;
 import net.vvakame.appengine.deferred.util.DeferredUtil;
 
 /**
@@ -11,6 +12,7 @@ public class TestService {
 
 	static int count = 0;
 
+	@Deferred
 	public static int test(long sample) {
 		try {
 			if ((count % 4) == 0) {
