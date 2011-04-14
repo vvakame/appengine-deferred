@@ -1,5 +1,7 @@
 package net.vvakame.appengine.deferred.sample;
 
+import net.vvakame.appengine.deferred.util.PersistentException;
+
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
@@ -16,17 +18,17 @@ public class TestServiceDeffered {
 	 * 
 	 * @return 実行結果
 	 * @author vvakame
-	 * @return
+	 * @return 実行結果(非同期化した場合も)
 	 */
 	public static int test(int sample) {
 		try {
 			return TestService.test(sample);
-		} catch (Exception e) {
+		} catch (PersistentException e) {
 			DeferredTask deferred = new Task_test_int(sample);
 			QueueFactory.getDefaultQueue().add(
 					TaskOptions.Builder.withPayload(deferred));
+			return e.getValue();
 		}
-		return Integer.MIN_VALUE;
 	}
 
 	@SuppressWarnings("serial")
