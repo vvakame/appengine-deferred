@@ -1,0 +1,9 @@
+.*.swp
+.DS_Store
+**/bin/
+**/.apt_generated/
+**/gen/
+**/target/
+**/eclipse.lib/
+log
+
