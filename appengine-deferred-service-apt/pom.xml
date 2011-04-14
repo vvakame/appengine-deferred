@@ -231,6 +231,7 @@ warSrcDirIsOutput=false
                 <![CDATA[
 eclipse.preferences.version=1
 ormEnhancementInclusions=
+validationExclusions=**/net/vvakame/**
                ]]>
 							</content>
 						</file>

@@ -1,9 +1,15 @@
-.*.swp
+target/**
+bin/**
+build/**
+.apt_generated/**
+war/.idea/
+war/WEB-INF/appengine-generated/**
+war/WEB-INF/classes/
+war/WEB-INF/lib/appengine-*.jar
+war/WEB-INF/lib/datanucleus-*.jar
+war/WEB-INF/lib/geronimo-*.jar
+war/WEB-INF/lib/jdo2*.jar
+war/WEB-INF/lib/jsr*.jar
 .DS_Store
-**/bin/
-**/.apt_generated/
-**/gen/
-**/target/
-**/eclipse.lib/
-log
+eclipse.lib/
 
