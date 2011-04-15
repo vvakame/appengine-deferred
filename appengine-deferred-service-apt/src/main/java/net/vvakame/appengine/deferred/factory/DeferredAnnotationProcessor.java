@@ -1,6 +1,7 @@
 package net.vvakame.appengine.deferred.factory;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 import net.vvakame.appengine.deferred.annotation.Deferred;
@@ -48,8 +50,20 @@ public class DeferredAnnotationProcessor extends AbstractProcessor {
 	public boolean process(Set<? extends TypeElement> annotations,
 			RoundEnvironment roundEnv) {
 
-		for (Element element : methodsIn(roundEnv
-				.getElementsAnnotatedWith(Deferred.class))) {
+		ClassGenerateHelper.init(processingEnv);
+
+		Log.d("start process method.");
+
+		Set<ExecutableElement> methods = methodsIn(roundEnv
+				.getElementsAnnotatedWith(Deferred.class));
+		Map<String, Element> classMap = new HashMap<String, Element>();
+		for (ExecutableElement method : methods) {
+			Element classElement = method.getEnclosingElement();
+			classMap.put(classElement.toString(), classElement);
+		}
+
+		for (String key : classMap.keySet()) {
+			Element element = classMap.get(key);
 
 			Log.d("process " + element.toString());
 

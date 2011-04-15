@@ -1,0 +1,95 @@
+package @{packageName};
+
+import net.vvakame.appengine.deferred.util.PersistentException;
+
+import com.google.appengine.api.taskqueue.DeferredTask;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
+
+/**
+ * {@link @{className}} を遅延処理させる.
+ * 
+ * @author vvakame
+ */
+public class @{className}Deferred {
+
+@foreach{obj : methods}
+	/**
+	 * {@link @{className}#@{obj.name}(@{obj._comma})} の失敗時非同期化.
+	 * 
+	 * @return 実行結果(非同期化した場合も帰る)@foreach{th : obj.throws}
+	 * @throws @{th}@end{}
+	 * @author vvakame
+	 */
+	public static @{obj.return} @{obj.name}(@{obj._args}) @{obj._throws} {
+		
+		try {
+	@if{obj.return == "void"}
+			@{className}.@{obj.name}(@{obj._call});
+	@else{}
+			return @{className}.@{obj.name}(@{obj._call});
+	@end{}
+		} catch (PersistentException e) {
+			DeferredTask deferred = new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
+			QueueFactory.getDefaultQueue().add(TaskOptions.Builder.withPayload(deferred));
+	@if{obj.return == "boolean"}
+			return (Boolean) e.getValue();
+	@else{obj.return == "char"}
+			return (Character) e.getValue();
+	@else{obj.return == "byte"}
+			return (Byte) e.getValue();
+	@else{obj.return == "short"}
+			return (Short) e.getValue();
+	@else{obj.return == "int"}
+			return (Integer) e.getValue();
+	@else{obj.return == "long"}
+			return (Long) e.getValue();
+	@else{obj.return == "float"}
+			return (Float) e.getValue();
+	@else{obj.return == "double"}
+			return (Double) e.getValue();
+	@else{obj.return == "void"}
+	@else{}
+			return e.getValue();
+	@end{}
+		}
+	}
+	@if{obj.extends == null}
+	@SuppressWarnings("serial")
+	static class Task_@{obj.name}_@{obj._underscore} implements DeferredTask {
+	@else{}
+	static class Task_@{obj.name}_@{obj._underscore} extends @{obj.extends} {
+	@end{}
+
+	@foreach{param : obj.params}
+		@{param.type} @{param.name};
+	@end{}
+
+		Task_@{obj.name}_@{obj._underscore}(@{obj._args}) {
+	@foreach{param : obj.params}
+			this.@{param.name} = @{param.name};
+	@end{}
+		}
+
+	@if{obj.extends == null}
+		@Override
+		public void run() {
+			try{
+				@{className}.@{obj.name}(@{obj._call});
+			}catch(Exception e){
+				if(e instanceof RuntimeException){
+					throw (RuntimeException)e;
+				}else{
+					throw new RuntimeException(e);
+				}
+			}
+		}
+	@else{}
+		@Override
+		public void delegate() @{obj._throws} {
+			@{className}.@{obj.name}(@{obj._call});
+		}
+	@end{}
+	}
+@end{}
+}

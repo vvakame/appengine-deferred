@@ -22,13 +22,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.tools.JavaFileObject;
 
 import net.vvakame.appengine.deferred.factory.GeneratingModel;
 import net.vvakame.appengine.deferred.factory.Log;
+import net.vvakame.appengine.deferred.factory.MethodModel;
+import net.vvakame.appengine.deferred.factory.ParameterModel;
 
 import org.mvel2.templates.TemplateRuntime;
 
@@ -68,12 +72,83 @@ public class MvelTemplate {
 	static Map<String, Object> convModelToMap(GeneratingModel model) {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 
+		map.put("packageName", model.getPackageName());
+		map.put("className", model.getClassName());
+
+		List<Map<String, Object>> methods = new ArrayList<Map<String, Object>>();
+		for (MethodModel method : model.getMethods()) {
+			Map<String, Object> toMap = convMethodElementToMap(method);
+			methods.add(toMap);
+		}
+		map.put("methods", methods);
+
+		return map;
+	}
+
+	private static Map<String, Object> convMethodElementToMap(MethodModel method) {
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		map.put("extends", method.getExtendsClass());
+		map.put("name", method.getName());
+		List<Map<String, Object>> params = new ArrayList<Map<String, Object>>();
+		for (ParameterModel param : method.getParams()) {
+			params.add(convParameterElementToMap(param));
+		}
+		map.put("params", params);
+		map.put("return", method.getReturnType());
+		map.put("throws", method.getThrowsTypes());
+
+		StringBuilder builderArgsComma = new StringBuilder();
+		StringBuilder builderCallComma = new StringBuilder();
+		StringBuilder builderUnderscore = new StringBuilder();
+		StringBuilder builderComma = new StringBuilder();
+		for (int i = 0; i < method.getParams().size(); i++) {
+			ParameterModel p = method.getParams().get(i);
+
+			builderArgsComma.append(p.getType()).append(" ")
+					.append(p.getName());
+			builderCallComma.append(p.getName());
+			builderUnderscore.append(p.getSimpleType());
+			builderComma.append(p.getSimpleType());
+			if (i < method.getParams().size() - 1) {
+				builderArgsComma.append(",");
+				builderCallComma.append(",");
+				builderUnderscore.append("_");
+				builderComma.append(",");
+			}
+		}
+		map.put("_args", builderArgsComma.toString());
+		map.put("_call", builderCallComma.toString());
+		map.put("_underscore", builderUnderscore.toString());
+		map.put("_comma", builderComma.toString());
+
+		StringBuilder builderThrows = new StringBuilder();
+		for (int i = 0; i < method.getThrowsTypes().size(); i++) {
+			if (i == 0) {
+				builderThrows.append("throws ");
+			}
+			builderThrows.append(method.getThrowsTypes().get(i));
+			if (i < method.getThrowsTypes().size() - 1) {
+				builderThrows.append(",");
+			}
+		}
+		map.put("_throws", builderThrows.toString());
+
+		return map;
+	}
+
+	private static Map<String, Object> convParameterElementToMap(
+			ParameterModel param) {
+
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		map.put("name", param.getName());
+		map.put("type", param.getType());
+
 		return map;
 	}
 
 	static String getTemplateString() {
 		InputStream stream = MvelTemplate.class.getClassLoader()
-				.getResourceAsStream("JsonModelGen.java.mvel");
+				.getResourceAsStream("DeferredModelGen.java.mvel");
 		try {
 			String template = streamToString(stream);
 			// Log.d(template);

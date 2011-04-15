@@ -40,6 +40,10 @@ public class DeferredAnnotationProcessorTest extends AptinaTestCase {
 		addCompilationUnit(TestService.class);
 
 		compile();
+
+		String source = getGeneratedSource(TestService.class.getName()
+				+ "Deferred");
+		System.out.println(source);
 	}
 
 	@Override

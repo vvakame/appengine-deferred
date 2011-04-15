@@ -16,69 +16,66 @@
 
 package net.vvakame.appengine.deferred.factory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * クラス全体に対応する生成ソースの表現.
+ * メソッドの引数に対応する生成ソースの表現.
  * 
  * @author vvakame
  */
-public class GeneratingModel {
-	String packageName;
+public class ParameterModel {
+	String type;
 
-	String className;
+	String simpleType;
 
-	List<MethodModel> methods = new ArrayList<MethodModel>();
+	String name;
 
 	/**
-	 * @return the packageName
+	 * @return the type
 	 * @category accessor
 	 */
-	public String getPackageName() {
-		return packageName;
+	public String getType() {
+		return type;
 	}
 
 	/**
-	 * @param packageName
-	 *            the packageName to set
+	 * @param type
+	 *            the type to set
 	 * @category accessor
 	 */
-	public void setPackageName(String packageName) {
-		this.packageName = packageName;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	/**
-	 * @return the className
+	 * @return the simpleType
 	 * @category accessor
 	 */
-	public String getClassName() {
-		return className;
+	public String getSimpleType() {
+		return simpleType;
 	}
 
 	/**
-	 * @param className
-	 *            the className to set
+	 * @param simpleType
+	 *            the simpleType to set
 	 * @category accessor
 	 */
-	public void setClassName(String className) {
-		this.className = className;
+	public void setSimpleType(String simpleType) {
+		this.simpleType = simpleType;
 	}
 
 	/**
-	 * @return the methods
+	 * @return the name
 	 * @category accessor
 	 */
-	public List<MethodModel> getMethods() {
-		return methods;
+	public String getName() {
+		return name;
 	}
 
 	/**
-	 * @param methods
-	 *            the methods to set
+	 * @param name
+	 *            the name to set
 	 * @category accessor
 	 */
-	public void setMethods(List<MethodModel> methods) {
-		this.methods = methods;
+	public void setName(String name) {
+		this.name = name;
 	}
 }
