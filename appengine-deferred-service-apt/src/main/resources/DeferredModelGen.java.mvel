@@ -15,9 +15,10 @@ public class @{className}Deferred {
 
 @foreach{obj : methods}
 	/**
-	 * {@link @{className}#@{obj.name}(@{obj._comma})} の失敗時非同期化.
-	 * 
-	 * @return 実行結果(非同期化した場合も帰る)@foreach{th : obj.throws}
+	 * {@link @{className}} の同名メソッドの失敗時非同期化.
+	 * @foreach{p : obj.params}
+	 * @param @{p.name}@end{}@if{obj.return != "void"}
+	 * @return 実行結果(非同期化した場合も帰る)@end{}@foreach{th : obj.throws}
 	 * @throws @{th}@end{}
 	 * @author vvakame
 	 */

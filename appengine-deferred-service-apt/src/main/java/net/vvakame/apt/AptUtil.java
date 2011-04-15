@@ -43,9 +43,12 @@ public class AptUtil {
 	}
 
 	/**
-	 * elementがClassを表す {@link Element} である場合、super classの {@link Element} を返します.<br>
-	 * {@link Object} の {@link Element} が渡されたか、 {@link ElementKind#CLASS} 以外の {@link Element} が渡された場合 {@code null} を返します.
-	 * @param element super classを取得したい {@link Element}
+	 * elementがClassを表す {@link Element} である場合、super classの {@link Element}
+	 * を返します.<br> {@link Object} の {@link Element} が渡されたか、 {@link ElementKind#CLASS}
+	 * 以外の {@link Element} が渡された場合 {@code null} を返します.
+	 * 
+	 * @param element
+	 *            super classを取得したい {@link Element}
 	 * @return elementの super classの {@link Element}
 	 * @author vvakame
 	 */
@@ -63,6 +66,7 @@ public class AptUtil {
 
 	/**
 	 * elementが {@link Enum} の型であるかを調べます.
+	 * 
 	 * @param element
 	 * @return {@link Enum} の子クラスか否か
 	 * @author vvakame
@@ -79,6 +83,7 @@ public class AptUtil {
 
 	/**
 	 * elementが プリミティブ型のラッパクラスであるかを調べます.
+	 * 
 	 * @param element
 	 * @return プリミティブ型のラッパクラスか否か
 	 * @author vvakame
@@ -96,7 +101,8 @@ public class AptUtil {
 			return true;
 		} else if (element.toString().equals(Short.class.getCanonicalName())) {
 			return true;
-		} else if (element.toString().equals(Character.class.getCanonicalName())) {
+		} else if (element.toString()
+				.equals(Character.class.getCanonicalName())) {
 			return true;
 		} else if (element.toString().equals(Double.class.getCanonicalName())) {
 			return true;
@@ -109,18 +115,21 @@ public class AptUtil {
 
 	/**
 	 * 指定された type が Internalな要素かどうかをチェック.
+	 * 
 	 * @param typeUtils
 	 * @param type
 	 * @return Internalな要素か否か
 	 * @author vvakame
 	 */
 	public static boolean isInternalType(Types typeUtils, TypeMirror type) {
-		Element element = ((TypeElement) typeUtils.asElement(type)).getEnclosingElement();
+		Element element = ((TypeElement) typeUtils.asElement(type))
+				.getEnclosingElement();
 		return element.getKind() != ElementKind.PACKAGE;
 	}
 
 	/**
 	 * 指定された element の {@link TypeElement} を取得する.
+	 * 
 	 * @param typeUtils
 	 * @param element
 	 * @return element の {@link TypeElement}
@@ -132,11 +141,16 @@ public class AptUtil {
 	}
 
 	/**
-	 * parentが含む {@link Element} の中で、 annotationで修飾され、kindに一致する種類の {@link Element} を集めて返す.<br>
+	 * parentが含む {@link Element} の中で、 annotationで修飾され、kindに一致する種類の
+	 * {@link Element} を集めて返す.<br>
 	 * kind が渡されなかった場合は種類での絞り込みを行わない.
-	 * @param parent この要素に含まれる {@link Element} を集める
-	 * @param annotation このアノテーションがついている {@link Element} を集める
-	 * @param kind 指定したい {@link ElementKind} があったら指定 
+	 * 
+	 * @param parent
+	 *            この要素に含まれる {@link Element} を集める
+	 * @param annotation
+	 *            このアノテーションがついている {@link Element} を集める
+	 * @param kind
+	 *            指定したい {@link ElementKind} があったら指定
 	 * @return 集められた {@link Element}
 	 * @author vvakame
 	 */
@@ -162,6 +176,7 @@ public class AptUtil {
 	/**
 	 * elementのpackage名を返す.<br>
 	 * elementの {@link ElementKind} は {@link ElementKind#CLASS} である必要がある.
+	 * 
 	 * @param element
 	 * @return package名
 	 * @author vvakame
@@ -178,6 +193,7 @@ public class AptUtil {
 	/**
 	 * SimpleNameを取得する java.lang.String だったら String ←この部分.<br>
 	 * elementの {@link ElementKind} は {@link ElementKind#CLASS} である必要がある.
+	 * 
 	 * @param element
 	 * @return SimpleName
 	 * @author vvakame
@@ -193,6 +209,7 @@ public class AptUtil {
 
 	/**
 	 * SimpleNameを取得する java.lang.String だったら String ←この部分.
+	 * 
 	 * @param tm
 	 * @return SimpleName
 	 * @author vvakame
@@ -200,11 +217,19 @@ public class AptUtil {
 	public static String getSimpleName(TypeMirror tm) {
 		String str = tm.toString();
 		int i = str.lastIndexOf(".");
-		return str.substring(i + 1);
+		int j = str.indexOf("<");
+		String result;
+		if (j == -1) {
+			result = str.substring(i + 1);
+		} else {
+			result = str.substring(i + 1, j);
+		}
+		return result;
 	}
 
 	/**
 	 * FQNを取得する.
+	 * 
 	 * @param tm
 	 * @return FQN
 	 * @author vvakame
@@ -221,6 +246,7 @@ public class AptUtil {
 
 	/**
 	 * FQNを取得する.
+	 * 
 	 * @param element
 	 * @return FQN
 	 * @author vvakame
@@ -240,6 +266,7 @@ public class AptUtil {
 
 	/**
 	 * elementの可視性が public かを判定する
+	 * 
 	 * @param element
 	 * @return publicかどうか
 	 * @author vvakame
@@ -250,6 +277,7 @@ public class AptUtil {
 
 	/**
 	 * elementの可視性が protected かを判定する
+	 * 
 	 * @param element
 	 * @return protectedかどうか
 	 * @author vvakame
@@ -260,6 +288,7 @@ public class AptUtil {
 
 	/**
 	 * elementの可視性が private かを判定する
+	 * 
 	 * @param element
 	 * @return privateかどうか
 	 * @author vvakame
@@ -270,6 +299,7 @@ public class AptUtil {
 
 	/**
 	 * elementの可視性が package private かを判定する
+	 * 
 	 * @param element
 	 * @return package privateかどうか
 	 * @author vvakame
@@ -287,6 +317,7 @@ public class AptUtil {
 
 	/**
 	 * elementが static かを判定する
+	 * 
 	 * @param element
 	 * @return staticかどうか
 	 * @author vvakame
@@ -299,19 +330,22 @@ public class AptUtil {
 	 * element に methodName という名前のメソッドが存在するか調べる.<br>
 	 * elementの {@link ElementKind} は {@link ElementKind#CLASS} である必要がある.<br>
 	 * {@link Modifier} を渡した場合、そのメソッドが modifiersの特徴を全て備えているかをチェック
+	 * 
 	 * @param element
 	 * @param methodName
 	 * @param modifiers
 	 * @return メソッドが存在するか
 	 * @author vvakame
 	 */
-	public static boolean isMethodExists(Element element, String methodName, Modifier... modifiers) {
+	public static boolean isMethodExists(Element element, String methodName,
+			Modifier... modifiers) {
 		if (element.getKind() != ElementKind.CLASS) {
 			throw new IllegalStateException();
 		}
 		List<Modifier> modifiersList = Arrays.asList(modifiers);
 
-		List<ExecutableElement> methods = ElementFilter.methodsIn(element.getEnclosedElements());
+		List<ExecutableElement> methods = ElementFilter.methodsIn(element
+				.getEnclosedElements());
 		for (ExecutableElement method : methods) {
 			if (method.getSimpleName().toString().equals(methodName)
 					&& method.getModifiers().containsAll(modifiersList)) {
@@ -335,7 +369,9 @@ public class AptUtil {
 
 	/**
 	 * elementに対応するsetterの名前を探し返す.
-	 * @param element フィールド
+	 * 
+	 * @param element
+	 *            フィールド
 	 * @return setter名
 	 * @author vvakame
 	 */
@@ -344,18 +380,20 @@ public class AptUtil {
 		String setterName;
 		if (element.getSimpleName().toString().startsWith("is")) {
 			// boolean isHoge; に対して setIsHoge ではなく setHoge が生成される
-			setterName = "set" + element.getSimpleName().toString().substring(2);
+			setterName = "set"
+					+ element.getSimpleName().toString().substring(2);
 		} else {
 			setterName = "set" + element.getSimpleName().toString();
 		}
 
 		Element setter = null;
-		for (Element method : ElementFilter.methodsIn(element.getEnclosingElement()
-			.getEnclosedElements())) {
+		for (Element method : ElementFilter.methodsIn(element
+				.getEnclosingElement().getEnclosedElements())) {
 			String methodName = method.getSimpleName().toString();
 
 			if (setterName.equalsIgnoreCase(methodName)) {
-				if (isStatic(method) == false && isPublic(method) || isPackagePrivate(method)) {
+				if (isStatic(method) == false && isPublic(method)
+						|| isPackagePrivate(method)) {
 					setter = method;
 					break;
 				}
@@ -370,7 +408,9 @@ public class AptUtil {
 
 	/**
 	 * elementに対応するgetterの名前を探し返す.
-	 * @param element フィールド
+	 * 
+	 * @param element
+	 *            フィールド
 	 * @return getter名
 	 * @author vvakame
 	 */
@@ -381,22 +421,25 @@ public class AptUtil {
 		String getterName3 = element.getSimpleName().toString();
 
 		Element getter = null;
-		for (Element method : ElementFilter.methodsIn(element.getEnclosingElement()
-			.getEnclosedElements())) {
+		for (Element method : ElementFilter.methodsIn(element
+				.getEnclosingElement().getEnclosedElements())) {
 			String methodName = method.getSimpleName().toString();
 
 			if (getterName1.equalsIgnoreCase(methodName)) {
-				if (isStatic(method) == false && isPublic(method) || isPackagePrivate(method)) {
+				if (isStatic(method) == false && isPublic(method)
+						|| isPackagePrivate(method)) {
 					getter = method;
 					break;
 				}
 			} else if (getterName2.equalsIgnoreCase(methodName)) {
-				if (isStatic(method) == false && isPublic(method) || isPackagePrivate(method)) {
+				if (isStatic(method) == false && isPublic(method)
+						|| isPackagePrivate(method)) {
 					getter = method;
 					break;
 				}
 			} else if (getterName3.equalsIgnoreCase(methodName)) {
-				if (isStatic(method) == false && isPublic(method) || isPackagePrivate(method)) {
+				if (isStatic(method) == false && isPublic(method)
+						|| isPackagePrivate(method)) {
 					getter = method;
 					break;
 				}
