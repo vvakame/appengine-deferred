@@ -14,12 +14,12 @@ import com.google.appengine.api.datastore.Key;
  * 
  * @author vvakame
  */
-public class TestService {
+public class SampleService {
 
 	static int count = 0;
 
 	@Deferred
-	public static int test(long sample) {
+	public static int hoge(long sample) {
 		try {
 			if ((count % 4) == 0) {
 				count += sample;

@@ -2,7 +2,7 @@
   <classpathentry kind="src" path="src/test/java" output="target/test-classes" including="**/*.java"/>
   <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
-  <classpathentry kind="output" path="war/WEB-INF/classes"/>
+  <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" sourcepath="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5-sources.jar"/>
   <classpathentry kind="src" path="/appengine-deferred-service-core"/>
   <classpathentry kind="var" path="M2_REPO/org/seasar/aptina/aptina-commons/1.0.0/aptina-commons-1.0.0.jar"/>
