@@ -59,6 +59,7 @@ public class @{className}Deferred {
 	@SuppressWarnings("serial")
 	static class Task_@{obj.name}_@{obj._underscore} implements DeferredTask {
 	@else{}
+	@SuppressWarnings("serial")
 	static class Task_@{obj.name}_@{obj._underscore} extends @{obj.extends} {
 	@end{}
 

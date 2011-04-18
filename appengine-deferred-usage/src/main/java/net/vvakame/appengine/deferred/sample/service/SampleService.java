@@ -1,4 +1,4 @@
-package net.vvakame.appengine.deferred.sample;
+package net.vvakame.appengine.deferred.sample.service;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.Map;
 
 import net.vvakame.appengine.deferred.annotation.Deferred;
 import net.vvakame.appengine.deferred.sample.entity.SampleInfo;
+import net.vvakame.appengine.deferred.sample.util.RaiseUnsupportedOperationDeferred;
 import net.vvakame.appengine.deferred.util.DeferredUtil;
 
 import org.slim3.datastore.Datastore;
@@ -272,5 +273,16 @@ public class SampleService {
 			DeferredUtil.throwWithValue(0.0, "error!", e);
 		}
 		return 0.0;
+	}
+
+	/**
+	 * 動作確認
+	 * @author vvakame
+	 */
+	@Deferred(task = RaiseUnsupportedOperationDeferred.class)
+	public static void ownTask() {
+		if (raiseError) {
+			DeferredUtil.throwWithValue(null, "error!", new RuntimeException());
+		}
 	}
 }

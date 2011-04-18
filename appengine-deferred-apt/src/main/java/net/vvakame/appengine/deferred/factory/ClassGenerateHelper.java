@@ -33,7 +33,6 @@ import javax.tools.JavaFileObject;
 
 import net.vvakame.appengine.deferred.annotation.Deferred;
 import net.vvakame.appengine.deferred.factory.template.Template;
-import net.vvakame.appengine.deferred.util.OwnDeferredTask;
 import static net.vvakame.apt.AptUtil.*;
 
 /**
@@ -153,8 +152,7 @@ public class ClassGenerateHelper {
 		}
 
 		String result = null;
-		if (task != null
-				&& !OwnDeferredTask.class.getCanonicalName().equals(task)) {
+		if (task != null) {
 			String tmp = task.toString();
 			if (tmp.endsWith(".class")) {
 				int i = tmp.lastIndexOf('.');

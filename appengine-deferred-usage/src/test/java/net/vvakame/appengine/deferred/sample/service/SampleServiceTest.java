@@ -1,4 +1,4 @@
-package net.vvakame.appengine.deferred.sample;
+package net.vvakame.appengine.deferred.sample.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -83,6 +83,7 @@ public class SampleServiceTest extends AppEngineTestCase {
 		SampleServiceDeferred.returnLong();
 		SampleServiceDeferred.returnFloat();
 		SampleServiceDeferred.returnDouble();
+		SampleServiceDeferred.ownTask();
 	}
 
 	/**
@@ -106,8 +107,9 @@ public class SampleServiceTest extends AppEngineTestCase {
 		SampleServiceDeferred.returnLong();
 		SampleServiceDeferred.returnFloat();
 		SampleServiceDeferred.returnDouble();
+		SampleServiceDeferred.ownTask();
 
-		assertThat(tester.tasks.size(), is(12));
+		assertThat(tester.tasks.size(), is(13));
 
 		SampleService.setRaiseError(false);
 
