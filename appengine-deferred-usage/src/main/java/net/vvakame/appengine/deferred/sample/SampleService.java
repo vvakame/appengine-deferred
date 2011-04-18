@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import net.vvakame.appengine.deferred.annotation.Deferred;
+import net.vvakame.appengine.deferred.sample.entity.SampleInfo;
 import net.vvakame.appengine.deferred.util.DeferredUtil;
+
+import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
 
@@ -16,8 +19,16 @@ import com.google.appengine.api.datastore.Key;
  */
 public class SampleService {
 
-	static int count = 0;
+	static boolean raiseError = false;
 
+
+	/**
+	 * @param raiseError the raiseError to set
+	 * @category accessor
+	 */
+	public static void setRaiseError(boolean raiseError) {
+		SampleService.raiseError = raiseError;
+	}
 
 	/**
 	 * テスト用メソッド
@@ -26,18 +37,16 @@ public class SampleService {
 	 * @author vvakame
 	 */
 	@Deferred
-	public static int hoge(long sample) {
+	public static long increment(long sample) {
 		try {
-			if ((count % 4) == 0) {
-				count += sample;
+			if (raiseError) {
 				throw new IllegalStateException();
-			} else {
-				count += sample;
 			}
+			Datastore.put(new SampleInfo());
 		} catch (IllegalStateException e) {
-			DeferredUtil.throwWithValue(count, "error!", e);
+			DeferredUtil.throwWithValue(sample + 1, "error!", e);
 		}
-		return count;
+		return sample + 1;
 	}
 
 	/**
@@ -48,6 +57,15 @@ public class SampleService {
 	 */
 	@Deferred
 	public static List<Key> getKeys(Key keyBy) {
+		try {
+			if (raiseError) {
+				throw new RuntimeException();
+			} else {
+				return null;
+			}
+		} catch (RuntimeException e) {
+			DeferredUtil.throwWithValue(null, "error!", e);
+		}
 		return null;
 	}
 
@@ -60,7 +78,15 @@ public class SampleService {
 	 */
 	@Deferred
 	public static Map<String, List<? extends Number>> generics(Key key, List<Key> keys) {
-
+		try {
+			if (raiseError) {
+				throw new RuntimeException();
+			} else {
+				return null;
+			}
+		} catch (RuntimeException e) {
+			DeferredUtil.throwWithValue(null, "error!", e);
+		}
 		return null;
 	}
 
@@ -71,7 +97,13 @@ public class SampleService {
 	 */
 	@Deferred
 	public static void throwRuntimeException() throws ConcurrentModificationException {
-
+		try {
+			if (raiseError) {
+				throw new ConcurrentModificationException();
+			}
+		} catch (RuntimeException e) {
+			DeferredUtil.throwWithValue(null, "error!", e);
+		}
 	}
 
 	/**
@@ -81,7 +113,13 @@ public class SampleService {
 	 */
 	@Deferred
 	public static void throwException() throws Exception {
-
+		try {
+			if (raiseError) {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			DeferredUtil.throwWithValue(null, "error!", e);
+		}
 	}
 
 	/**
@@ -91,6 +129,15 @@ public class SampleService {
 	 */
 	@Deferred
 	public static boolean returnBoolean() {
+		try {
+			if (raiseError) {
+				throw new RuntimeException();
+			} else {
+				return false;
+			}
+		} catch (RuntimeException e) {
+			DeferredUtil.throwWithValue(false, "error!", e);
+		}
 		return false;
 	}
 
@@ -101,6 +148,15 @@ public class SampleService {
 	 */
 	@Deferred
 	public static char returnChar() {
+		try {
+			if (raiseError) {
+				throw new RuntimeException();
+			} else {
+				return 'a';
+			}
+		} catch (RuntimeException e) {
+			DeferredUtil.throwWithValue('a', "error!", e);
+		}
 		return 'a';
 	}
 
@@ -111,6 +167,15 @@ public class SampleService {
 	 */
 	@Deferred
 	public static byte returnByte() {
+		try {
+			if (raiseError) {
+				throw new RuntimeException();
+			} else {
+				return 0;
+			}
+		} catch (RuntimeException e) {
+			DeferredUtil.throwWithValue((byte) 0, "error!", e);
+		}
 		return 0;
 	}
 
@@ -121,6 +186,15 @@ public class SampleService {
 	 */
 	@Deferred
 	public static short returnShort() {
+		try {
+			if (raiseError) {
+				throw new RuntimeException();
+			} else {
+				return 0;
+			}
+		} catch (RuntimeException e) {
+			DeferredUtil.throwWithValue((short) 0, "error!", e);
+		}
 		return 0;
 	}
 
@@ -131,6 +205,15 @@ public class SampleService {
 	 */
 	@Deferred
 	public static int returnInteger() {
+		try {
+			if (raiseError) {
+				throw new RuntimeException();
+			} else {
+				return 0;
+			}
+		} catch (RuntimeException e) {
+			DeferredUtil.throwWithValue(0, "error!", e);
+		}
 		return 0;
 	}
 
@@ -141,6 +224,15 @@ public class SampleService {
 	 */
 	@Deferred
 	public static long returnLong() {
+		try {
+			if (raiseError) {
+				throw new RuntimeException();
+			} else {
+				return 0;
+			}
+		} catch (RuntimeException e) {
+			DeferredUtil.throwWithValue(0L, "error!", e);
+		}
 		return 0;
 	}
 
@@ -151,6 +243,15 @@ public class SampleService {
 	 */
 	@Deferred
 	public static Float returnFloat() {
+		try {
+			if (raiseError) {
+				throw new RuntimeException();
+			} else {
+				return 0.0f;
+			}
+		} catch (RuntimeException e) {
+			DeferredUtil.throwWithValue(0.0f, "error!", e);
+		}
 		return 0.0f;
 	}
 
@@ -161,6 +262,15 @@ public class SampleService {
 	 */
 	@Deferred
 	public static Double returnDouble() {
+		try {
+			if (raiseError) {
+				throw new RuntimeException();
+			} else {
+				return 0.0;
+			}
+		} catch (RuntimeException e) {
+			DeferredUtil.throwWithValue(0.0, "error!", e);
+		}
 		return 0.0;
 	}
 }
