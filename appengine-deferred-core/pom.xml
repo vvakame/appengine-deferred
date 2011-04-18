@@ -4,14 +4,14 @@
 
 	<groupId>net.vvakame</groupId>
 	<artifactId>appengine-deferred-core</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>net.vvakame</groupId>
 		<artifactId>appengine-deferred-parent</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.1</version>
 	</parent>
 
 	<properties>
@@ -57,9 +57,7 @@
 
 	<build>
 		<finalName>deferred-maven</finalName>
-		<!-- 
-		<outputDirectory>${generated.war}/WEB-INF/classes</outputDirectory>
-		 -->
+		<!-- <outputDirectory>${generated.war}/WEB-INF/classes</outputDirectory> -->
 		<plugins>
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
