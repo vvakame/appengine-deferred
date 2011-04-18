@@ -4,6 +4,7 @@
 .settings/
 target/**
 build/**
+bin/**
 .apt_generated/**
 war/WEB-INF/appengine-generated/**
 war/WEB-INF/classes/
