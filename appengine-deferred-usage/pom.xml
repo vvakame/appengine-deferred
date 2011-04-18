@@ -27,6 +27,14 @@
 				<updatePolicy>never</updatePolicy>
 			</releases>
 		</repository>
+		<repository>
+			<id>vvakame-appengine-diferred-release</id>
+			<url>http://vvakame.github.com/appengine-deferred/release</url>
+		</repository>
+		<repository>
+			<id>vvakame-appengine-diferred-snapshot</id>
+			<url>http://vvakame.github.com/appengine-deferred/snapshots</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
