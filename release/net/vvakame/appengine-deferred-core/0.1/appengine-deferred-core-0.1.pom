@@ -1,0 +1,189 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>net.vvakame</groupId>
+	<artifactId>appengine-deferred-core</artifactId>
+	<version>0.1</version>
+
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>net.vvakame</groupId>
+		<artifactId>appengine-deferred-parent</artifactId>
+		<version>0.1</version>
+	</parent>
+
+	<properties>
+		<appengine.version>1.4.3</appengine.version>
+		<generated.src>.apt_generated</generated.src>
+		<generated.war>war</generated.war>
+		<eclipse.lib>eclipse.lib</eclipse.lib>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-1.0-sdk</artifactId>
+			<version>${appengine.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-labs</artifactId>
+			<version>${appengine.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-stubs</artifactId>
+			<version>${appengine.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-local-runtime</artifactId>
+			<version>${appengine.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<finalName>deferred-maven</finalName>
+		<!-- <outputDirectory>${generated.war}/WEB-INF/classes</outputDirectory> -->
+		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies-for-webapp</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${generated.war}/WEB-INF/lib</outputDirectory>
+							<includeScope>runtime</includeScope>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-dependencies-for-apt</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${eclipse.lib}</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${generated.war}/WEB-INF/lib</directory>
+							<includes>
+								<include>**/*.jar</include>
+							</includes>
+						</fileset>
+						<fileset>
+							<directory>${generated.src}</directory>
+							<includes>
+								<include>**/*.*</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webXml>war/WEB-INF/web.xml</webXml>
+					<warSourceExcludes>.gwt-tmp/**</warSourceExcludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>com.google.appengine:appengine-api-1.0-sdk</exclude>
+						<exclude>com.google.appengine:appengine-api-labs</exclude>
+						<exclude>com.google.appengine:appengine-api-stubs</exclude>
+						<exclude>com.google.appengine:appengine-local-runtime</exclude>
+					</excludes>
+					<additionalProjectnatures>
+						<projectnature>com.google.appengine.eclipse.core.gaeNature
+						</projectnature>
+						<projectnature>com.google.gdt.eclipse.core.webAppNature
+						</projectnature>
+					</additionalProjectnatures>
+					<additionalBuildcommands>
+						<buildcommand>com.google.gdt.eclipse.core.webAppProjectValidator
+						</buildcommand>
+						<buildcommand>com.google.appengine.eclipse.core.enhancerbuilder
+						</buildcommand>
+						<buildcommand>com.google.appengine.eclipse.core.projectValidator
+						</buildcommand>
+					</additionalBuildcommands>
+					<classpathContainers>
+						<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER
+						</classpathContainer>
+						<classpathContainer>com.google.appengine.eclipse.core.GAE_CONTAINER
+						</classpathContainer>
+					</classpathContainers>
+					<additionalConfig>
+						<file>
+							<name>.settings/org.eclipse.jdt.apt.core.prefs</name>
+							<content>
+                <![CDATA[
+eclipse.preferences.version=1
+org.eclipse.jdt.apt.aptEnabled=true
+org.eclipse.jdt.apt.genSrcDir=${generated.src}
+org.eclipse.jdt.apt.reconcileEnabled=false
+               ]]>
+							</content>
+						</file>
+						<file>
+							<name>.settings/com.google.gdt.eclipse.core.prefs</name>
+							<content>
+                <![CDATA[
+eclipse.preferences.version=1
+jarsExcludedFromWebInfLib=
+warSrcDir=war
+warSrcDirIsOutput=false
+               ]]>
+							</content>
+						</file>
+						<file>
+							<name>.settings/com.google.appengine.eclipse.core.prefs</name>
+							<content>
+                <![CDATA[
+eclipse.preferences.version=1
+ormEnhancementInclusions=
+               ]]>
+							</content>
+						</file>
+					</additionalConfig>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

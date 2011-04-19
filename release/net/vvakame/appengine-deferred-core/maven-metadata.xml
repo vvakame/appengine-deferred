@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>net.vvakame</groupId>
+  <artifactId>appengine-deferred-core</artifactId>
+  <version>0.1</version>
+  <versioning>
+    <versions>
+      <version>0.1</version>
+    </versions>
+    <lastUpdated>20110419021512</lastUpdated>
+  </versioning>
+</metadata>
