@@ -1,5 +1,7 @@
 package net.vvakame.appengine.deferred.util;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.google.appengine.api.taskqueue.DeferredTaskContext;
 
 /**
@@ -10,12 +12,20 @@ import com.google.appengine.api.taskqueue.DeferredTaskContext;
 public class DeferredUtil {
 
 	static boolean inTask() {
-		if (DeferredTaskContext.getCurrentRequest() == null) {
+		HttpServletRequest request = DeferredTaskContext.getCurrentRequest();
+		if (request == null) {
 			return false;
 		}
-		String header = DeferredTaskContext.getCurrentRequest().getHeader(
-				"X-AppEngine-TaskName");
-		return header == null;
+		return "application/x-binary-app-engine-java-runnable-task"
+				.equals(request.getHeader("content-type"));
+	}
+
+	static String getTaskName() {
+		HttpServletRequest request = DeferredTaskContext.getCurrentRequest();
+		if (request == null) {
+			return null;
+		}
+		return request.getHeader("X-AppEngine-TaskName");
 	}
 
 	/**
