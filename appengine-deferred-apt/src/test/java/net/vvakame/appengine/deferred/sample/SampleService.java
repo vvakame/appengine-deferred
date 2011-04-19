@@ -70,6 +70,17 @@ public class SampleService {
 	/**
 	 * テスト用メソッド
 	 * 
+	 * @param objs
+	 * @author vvakame
+	 */
+	@Deferred
+	public static void arrayArgs(Object... objs) {
+
+	}
+
+	/**
+	 * テスト用メソッド
+	 * 
 	 * @author vvakame
 	 * @throws ConcurrentModificationException
 	 */

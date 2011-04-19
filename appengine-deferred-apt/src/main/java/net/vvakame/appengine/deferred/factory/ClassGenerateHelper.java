@@ -120,8 +120,13 @@ public class ClassGenerateHelper {
 			for (VariableElement var : method.getParameters()) {
 				ParameterModel p = new ParameterModel();
 				p.setType(var.asType().toString());
-				p.setSimpleType(getSimpleName(processingEnv.getTypeUtils()
-						.erasure(var.asType())));
+				String simpleName = getSimpleName(processingEnv.getTypeUtils()
+						.erasure(var.asType()));
+				if (simpleName.endsWith("[]")) {
+					simpleName = simpleName.substring(0,
+							simpleName.length() - 2) + "Array";
+				}
+				p.setSimpleType(simpleName);
 				p.setName(var.getSimpleName().toString());
 				m.getParams().add(p);
 			}
