@@ -182,10 +182,10 @@
 						<sourceOutputDirectory>${generated.src}</sourceOutputDirectory>
 					</configuration>
 				</plugin>
-                <plugin>
-                  <artifactId>maven-site-plugin</artifactId>
-                  <version>2.2</version>
-                </plugin>
+				<plugin>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>2.2</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -223,7 +223,6 @@
 						<configuration>
 							<generatedSourcesDirectory>${generated.src}</generatedSourcesDirectory>
 							<proc>only</proc>
-							<compilerArgument>-AJsonPullParserClassPostfix=${genclass.postfix}</compilerArgument>
 							<includes>
 								<include>**</include>
 							</includes>
