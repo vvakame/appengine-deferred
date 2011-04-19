@@ -4,10 +4,10 @@
 	<groupId>net.vvakame</groupId>
 	<artifactId>appengine-deferred-usage</artifactId>
 	<packaging>war</packaging>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.3</version>
 
 	<properties>
-		<deferred.version>0.3-SNAPSHOT</deferred.version>
+		<deferred.version>${version}</deferred.version>
 		<slim3.version>1.0.10</slim3.version>
 		<appengine.version>1.4.3</appengine.version>
 		<generated.src>.apt_generated</generated.src>

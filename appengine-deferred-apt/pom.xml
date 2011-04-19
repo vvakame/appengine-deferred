@@ -5,12 +5,12 @@
 	<artifactId>appengine-deferred-apt</artifactId>
 	<packaging>jar</packaging>
 
-	<version>0.2</version>
+	<version>0.3</version>
 
 	<parent>
 		<groupId>net.vvakame</groupId>
 		<artifactId>appengine-deferred-parent</artifactId>
-		<version>0.2</version>
+		<version>0.3</version>
 	</parent>
 
 	<properties>
