@@ -2,6 +2,8 @@ package @{packageName};
 
 import net.vvakame.appengine.deferred.util.PersistentException;
 
+import java.util.logging.Logger;
+
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
@@ -12,6 +14,8 @@ import com.google.appengine.api.taskqueue.TaskOptions;
  * @author vvakame
  */
 public class @{className}Deferred {
+
+	static final Logger logger = Logger.getLogger(@{className}Deferred.class.getName());
 
 @foreach{obj : methods}
 	/**
@@ -69,6 +73,9 @@ public class @{className}Deferred {
 		Task_@{obj.name}_@{obj._underscore}(@{obj._args}) {
 	@foreach{param : obj.params}
 			this.@{param.name} = @{param.name};
+	@end{}
+	@foreach{param : obj.params}
+			logger.log(java.util.logging.Level.FINEST, "@{param.name}=" + String.valueOf(@{param.name}));
 	@end{}
 		}
 

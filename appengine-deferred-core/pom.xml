@@ -56,7 +56,7 @@
 
 
 	<build>
-		<finalName>deferred-maven</finalName>
+		<finalName>appengine-deferred-core</finalName>
 		<!-- <outputDirectory>${generated.war}/WEB-INF/classes</outputDirectory> -->
 		<plugins>
 			<plugin>
