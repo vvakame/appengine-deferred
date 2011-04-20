@@ -12,13 +12,14 @@ import net.vvakame.appengine.deferred.util.DeferredUtil;
 import org.slim3.datastore.Datastore;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.taskqueue.DeferredTask;
 
 /**
  * なんか適当な処理.
  * 
  * @author vvakame
  */
-public class SampleService {
+public class SampleService2 {
 
 	static boolean raiseError = false;
 
@@ -28,7 +29,7 @@ public class SampleService {
 	 * @category accessor
 	 */
 	public static void setRaiseError(boolean raiseError) {
-		SampleService.raiseError = raiseError;
+		SampleService2.raiseError = raiseError;
 	}
 
 	/**
@@ -45,7 +46,8 @@ public class SampleService {
 			}
 			Datastore.put(new SampleInfo());
 		} catch (IllegalStateException e) {
-			DeferredUtil.throwWithValue(sample + 1, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.increment(sample);
+			DeferredUtil.post(deferred, e);
 		}
 		return sample + 1;
 	}
@@ -65,7 +67,8 @@ public class SampleService {
 				return null;
 			}
 		} catch (RuntimeException e) {
-			DeferredUtil.throwWithValue(null, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.getKeys(keyBy);
+			DeferredUtil.post(deferred, e);
 		}
 		return null;
 	}
@@ -86,7 +89,8 @@ public class SampleService {
 				return null;
 			}
 		} catch (RuntimeException e) {
-			DeferredUtil.throwWithValue(null, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.generics(key, keys);
+			DeferredUtil.post(deferred, e);
 		}
 		return null;
 	}
@@ -103,7 +107,8 @@ public class SampleService {
 				throw new ConcurrentModificationException();
 			}
 		} catch (RuntimeException e) {
-			DeferredUtil.throwWithValue(null, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.throwRuntimeException();
+			DeferredUtil.post(deferred, e);
 		}
 	}
 
@@ -119,7 +124,8 @@ public class SampleService {
 				throw new Exception();
 			}
 		} catch (Exception e) {
-			DeferredUtil.throwWithValue(null, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.throwException();
+			DeferredUtil.post(deferred, e);
 		}
 	}
 
@@ -137,7 +143,8 @@ public class SampleService {
 				return false;
 			}
 		} catch (RuntimeException e) {
-			DeferredUtil.throwWithValue(false, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.returnBoolean();
+			DeferredUtil.post(deferred, e);
 		}
 		return false;
 	}
@@ -156,7 +163,8 @@ public class SampleService {
 				return 'a';
 			}
 		} catch (RuntimeException e) {
-			DeferredUtil.throwWithValue('a', "error!", e);
+			DeferredTask deferred = SampleService2Deferred.returnChar();
+			DeferredUtil.post(deferred, e);
 		}
 		return 'a';
 	}
@@ -175,7 +183,8 @@ public class SampleService {
 				return 0;
 			}
 		} catch (RuntimeException e) {
-			DeferredUtil.throwWithValue((byte) 0, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.returnByte();
+			DeferredUtil.post(deferred, e);
 		}
 		return 0;
 	}
@@ -194,7 +203,8 @@ public class SampleService {
 				return 0;
 			}
 		} catch (RuntimeException e) {
-			DeferredUtil.throwWithValue((short) 0, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.returnShort();
+			DeferredUtil.post(deferred, e);
 		}
 		return 0;
 	}
@@ -213,7 +223,8 @@ public class SampleService {
 				return 0;
 			}
 		} catch (RuntimeException e) {
-			DeferredUtil.throwWithValue(0, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.returnInteger();
+			DeferredUtil.post(deferred, e);
 		}
 		return 0;
 	}
@@ -232,7 +243,8 @@ public class SampleService {
 				return 0;
 			}
 		} catch (RuntimeException e) {
-			DeferredUtil.throwWithValue(0L, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.returnLong();
+			DeferredUtil.post(deferred, e);
 		}
 		return 0;
 	}
@@ -251,7 +263,8 @@ public class SampleService {
 				return 0.0f;
 			}
 		} catch (RuntimeException e) {
-			DeferredUtil.throwWithValue(0.0f, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.returnFloat();
+			DeferredUtil.post(deferred, e);
 		}
 		return 0.0f;
 	}
@@ -270,7 +283,8 @@ public class SampleService {
 				return 0.0;
 			}
 		} catch (RuntimeException e) {
-			DeferredUtil.throwWithValue(0.0, "error!", e);
+			DeferredTask deferred = SampleService2Deferred.returnDouble();
+			DeferredUtil.post(deferred, e);
 		}
 		return 0.0;
 	}
@@ -282,7 +296,8 @@ public class SampleService {
 	@Deferred(task = RaiseUnsupportedOperationDeferred.class)
 	public static void ownTask() {
 		if (raiseError) {
-			DeferredUtil.throwWithValue(null, "error!", new RuntimeException());
+			DeferredTask deferred = SampleService2Deferred.ownTask();
+			DeferredUtil.post(deferred);
 		}
 	}
 }

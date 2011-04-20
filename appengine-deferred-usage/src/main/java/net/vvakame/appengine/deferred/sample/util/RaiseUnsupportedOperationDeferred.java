@@ -1,7 +1,6 @@
 package net.vvakame.appengine.deferred.sample.util;
 
 import net.vvakame.appengine.deferred.util.OwnDeferredTask;
-import net.vvakame.appengine.deferred.util.PersistentException;
 
 /**
  * なんか適当な処理.
@@ -15,7 +14,7 @@ public abstract class RaiseUnsupportedOperationDeferred extends OwnDeferredTask 
 	public void run() {
 		try {
 			delegate();
-		} catch (PersistentException e) {
+		} catch (RuntimeException e) {
 			e.getCause().printStackTrace();
 			throw e;
 		}

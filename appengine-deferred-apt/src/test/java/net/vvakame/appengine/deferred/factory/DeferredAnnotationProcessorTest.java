@@ -16,7 +16,7 @@
 
 package net.vvakame.appengine.deferred.factory;
 
-import net.vvakame.appengine.deferred.sample.SampleService;
+import net.vvakame.appengine.deferred.sample.SampleService1;
 
 import org.junit.Test;
 import org.seasar.aptina.unit.AptinaTestCase;
@@ -43,12 +43,12 @@ public class DeferredAnnotationProcessorTest extends AptinaTestCase {
 		DeferredAnnotationProcessor processor = new DeferredAnnotationProcessor();
 		addProcessor(processor);
 
-		addCompilationUnit(SampleService.class);
+		addCompilationUnit(SampleService1.class);
 
 		compile();
 
 		@SuppressWarnings("unused")
-		String source = getGeneratedSource(SampleService.class.getName()
+		String source = getGeneratedSource(SampleService1.class.getName()
 				+ "Deferred");
 
 		assertThat(getCompiledResult(), is(true));

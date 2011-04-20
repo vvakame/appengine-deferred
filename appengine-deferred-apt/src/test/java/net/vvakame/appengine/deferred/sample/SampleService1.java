@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.vvakame.appengine.deferred.annotation.Deferred;
-import net.vvakame.appengine.deferred.util.DeferredUtil;
 
 import com.google.appengine.api.datastore.Key;
 
@@ -14,7 +13,7 @@ import com.google.appengine.api.datastore.Key;
  * 
  * @author vvakame
  */
-public class SampleService {
+public class SampleService1 {
 
 	static int count = 0;
 
@@ -27,15 +26,11 @@ public class SampleService {
 	 */
 	@Deferred
 	public static int hoge(long sample) {
-		try {
-			if ((count % 4) == 0) {
-				count += sample;
-				throw new IllegalStateException();
-			} else {
-				count += sample;
-			}
-		} catch (IllegalStateException e) {
-			DeferredUtil.throwWithValue(count, "error!", e);
+		if ((count % 4) == 0) {
+			count += sample;
+			throw new IllegalStateException();
+		} else {
+			count += sample;
 		}
 		return count;
 	}

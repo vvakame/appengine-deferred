@@ -1,8 +1,13 @@
 package net.vvakame.appengine.deferred.util;
 
+import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.DeferredTaskContext;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 
 /**
  * 非同期化用ユーティリティ
@@ -11,7 +16,15 @@ import com.google.appengine.api.taskqueue.DeferredTaskContext;
  */
 public class DeferredUtil {
 
-	static boolean inTask() {
+	static final Logger logger = Logger.getLogger(DeferredUtil.class.getName());
+
+	/**
+	 * 現在実行中のコンテキストが {@link DeferredTask} な TQかどうかを判定し返す.
+	 * 
+	 * @return {@link DeferredTask} として実行中か否か
+	 * @author vvakame
+	 */
+	public static boolean isInTask() {
 		HttpServletRequest request = DeferredTaskContext.getCurrentRequest();
 		if (request == null) {
 			return false;
@@ -20,6 +33,13 @@ public class DeferredUtil {
 				.equals(request.getHeader("content-type"));
 	}
 
+	/**
+	 * 実行中の {@link DeferredTask} の名前を取得する.<br>
+	 * 名前は、管理コンソールから見る時に対応関係を調べるのに利用できる.
+	 * 
+	 * @return タスクの名前.
+	 * @author vvakame
+	 */
 	static String getTaskName() {
 		HttpServletRequest request = DeferredTaskContext.getCurrentRequest();
 		if (request == null) {
@@ -29,103 +49,31 @@ public class DeferredUtil {
 	}
 
 	/**
-	 * 値付例外の生成とthrow
+	 * {@link DeferredTask} を TQに突っ込む
 	 * 
-	 * @param value
-	 * @param th
+	 * @param deferred
 	 * @author vvakame
 	 */
-	public static void throwWithValue(Object value, RuntimeException th) {
-		if (inTask()) {
-			throw th;
-		} else {
-			throw new PersistentException(value, th);
-		}
+	public static void post(DeferredTask deferred) {
+		QueueFactory.getDefaultQueue().add(
+				TaskOptions.Builder.withPayload(deferred));
 	}
 
 	/**
-	 * 値付例外の生成とthrow
+	 * {@link DeferredTask} を TQに突っ込む.<br>
+	 * もし {@link DeferredTask} 実行中であれば、発生した例外を単にthrowする
 	 * 
-	 * @param value
-	 * @param th
+	 * @param deferred
 	 * @author vvakame
 	 * @throws Throwable
 	 */
-	public static void throwWithValue(Object value, Exception th)
-			throws Exception {
-		if (inTask()) {
-			throw th;
+	public static <T extends Throwable> void post(DeferredTask deferred, T e)
+			throws T {
+		if (isInTask()) {
+			throw e;
 		} else {
-			throw new PersistentException(value, th);
-		}
-	}
-
-	/**
-	 * 値付例外の生成とthrow
-	 * 
-	 * @param value
-	 * @param th
-	 * @author vvakame
-	 * @throws Throwable
-	 */
-	public static void throwWithValue(Object value, Throwable th)
-			throws Throwable {
-		if (inTask()) {
-			throw th;
-		} else {
-			throw new PersistentException(value, th);
-		}
-	}
-
-	/**
-	 * 値付例外の生成とthrow
-	 * 
-	 * @param value
-	 * @param msg
-	 * @param th
-	 * @author vvakame
-	 */
-	public static void throwWithValue(Object value, String msg,
-			RuntimeException th) {
-		if (inTask()) {
-			throw th;
-		} else {
-			throw new PersistentException(value, msg, th);
-		}
-	}
-
-	/**
-	 * 値付例外の生成とthrow
-	 * 
-	 * @param value
-	 * @param msg
-	 * @param th
-	 * @author vvakame
-	 */
-	public static void throwWithValue(Object value, String msg, Exception th)
-			throws Exception {
-		if (inTask()) {
-			throw th;
-		} else {
-			throw new PersistentException(value, msg, th);
-		}
-	}
-
-	/**
-	 * 値付例外の生成とthrow
-	 * 
-	 * @param value
-	 * @param msg
-	 * @param th
-	 * @author vvakame
-	 * @throws Throwable
-	 */
-	public static void throwWithValue(Object value, String msg, Throwable th)
-			throws Throwable {
-		if (inTask()) {
-			throw th;
-		} else {
-			throw new PersistentException(value, msg, th);
+			QueueFactory.getDefaultQueue().add(
+					TaskOptions.Builder.withPayload(deferred));
 		}
 	}
 }

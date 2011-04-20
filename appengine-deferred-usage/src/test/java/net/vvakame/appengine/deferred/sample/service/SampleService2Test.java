@@ -17,10 +17,10 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 /**
- * {@link SampleService} と {@link SampleServiceDeferred} のテストケース.
+ * {@link SampleService2} と {@link SampleService2Deferred} のテストケース.
  * @author vvakame
  */
-public class SampleServiceTest extends AppEngineTestCase {
+public class SampleService2Test extends AppEngineTestCase {
 
 	/**
 	 * 動作確認
@@ -28,9 +28,9 @@ public class SampleServiceTest extends AppEngineTestCase {
 	 */
 	@Test
 	public void increment_例外発生無し() {
-		SampleService.setRaiseError(false);
+		SampleService2.setRaiseError(false);
 
-		long result = SampleServiceDeferred.increment(3);
+		long result = SampleService2.increment(3);
 		assertThat(result, is(4L));
 
 		assertThat(tester.tasks.size(), is(0));
@@ -45,9 +45,9 @@ public class SampleServiceTest extends AppEngineTestCase {
 	 */
 	@Test
 	public void increment_例外発生有り() throws IOException, ClassNotFoundException {
-		SampleService.setRaiseError(true);
+		SampleService2.setRaiseError(true);
 
-		long result = SampleServiceDeferred.increment(8);
+		long result = SampleService2.increment(8);
 		assertThat(result, is(9L));
 
 		assertThat(tester.tasks.size(), is(1));
@@ -56,7 +56,7 @@ public class SampleServiceTest extends AppEngineTestCase {
 		TaskQueueAddRequest tq = tester.tasks.get(0);
 		DeferredTask deferred = get(tq);
 
-		SampleService.setRaiseError(false);
+		SampleService2.setRaiseError(false);
 
 		deferred.run();
 		assertThat(tester.count(SampleInfo.class), is(1));
@@ -69,21 +69,21 @@ public class SampleServiceTest extends AppEngineTestCase {
 	 */
 	@Test
 	public void 全メソッド叩き_成功() throws Exception {
-		SampleService.setRaiseError(false);
+		SampleService2.setRaiseError(false);
 
-		SampleServiceDeferred.getKeys(null);
-		SampleServiceDeferred.generics(null, null);
-		SampleServiceDeferred.throwRuntimeException();
-		SampleServiceDeferred.throwException();
-		SampleServiceDeferred.returnBoolean();
-		SampleServiceDeferred.returnChar();
-		SampleServiceDeferred.returnByte();
-		SampleServiceDeferred.returnShort();
-		SampleServiceDeferred.returnInteger();
-		SampleServiceDeferred.returnLong();
-		SampleServiceDeferred.returnFloat();
-		SampleServiceDeferred.returnDouble();
-		SampleServiceDeferred.ownTask();
+		SampleService2.getKeys(null);
+		SampleService2.generics(null, null);
+		SampleService2.throwRuntimeException();
+		SampleService2.throwException();
+		SampleService2.returnBoolean();
+		SampleService2.returnChar();
+		SampleService2.returnByte();
+		SampleService2.returnShort();
+		SampleService2.returnInteger();
+		SampleService2.returnLong();
+		SampleService2.returnFloat();
+		SampleService2.returnDouble();
+		SampleService2.ownTask();
 	}
 
 	/**
@@ -93,25 +93,25 @@ public class SampleServiceTest extends AppEngineTestCase {
 	 */
 	@Test
 	public void 全メソッド叩き_例外発生() throws Exception {
-		SampleService.setRaiseError(true);
+		SampleService2.setRaiseError(true);
 
-		SampleServiceDeferred.getKeys(null);
-		SampleServiceDeferred.generics(null, null);
-		SampleServiceDeferred.throwRuntimeException();
-		SampleServiceDeferred.throwException();
-		SampleServiceDeferred.returnBoolean();
-		SampleServiceDeferred.returnChar();
-		SampleServiceDeferred.returnByte();
-		SampleServiceDeferred.returnShort();
-		SampleServiceDeferred.returnInteger();
-		SampleServiceDeferred.returnLong();
-		SampleServiceDeferred.returnFloat();
-		SampleServiceDeferred.returnDouble();
-		SampleServiceDeferred.ownTask();
+		SampleService2.getKeys(null);
+		SampleService2.generics(null, null);
+		SampleService2.throwRuntimeException();
+		SampleService2.throwException();
+		SampleService2.returnBoolean();
+		SampleService2.returnChar();
+		SampleService2.returnByte();
+		SampleService2.returnShort();
+		SampleService2.returnInteger();
+		SampleService2.returnLong();
+		SampleService2.returnFloat();
+		SampleService2.returnDouble();
+		SampleService2.ownTask();
 
 		assertThat(tester.tasks.size(), is(13));
 
-		SampleService.setRaiseError(false);
+		SampleService2.setRaiseError(false);
 
 		for (TaskQueueAddRequest tq : tester.tasks) {
 			DeferredTask deferred = get(tq);

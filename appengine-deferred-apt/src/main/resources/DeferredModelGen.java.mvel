@@ -1,12 +1,8 @@
 package @{packageName};
 
-import net.vvakame.appengine.deferred.util.PersistentException;
-
 import java.util.logging.Logger;
 
 import com.google.appengine.api.taskqueue.DeferredTask;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskOptions;
 
 /**
  * {@link @{className}} を遅延処理させる.
@@ -21,43 +17,13 @@ public class @{className}Deferred {
 	/**
 	 * {@link @{className}} の同名メソッドの失敗時非同期化.
 	 * @foreach{p : obj.params}
-	 * @param @{p.name}@end{}@if{obj.return != "void"}
-	 * @return 実行結果(非同期化した場合も帰る)@end{}@foreach{th : obj.throws}
+	 * @param @{p.name}@end{}
+	 * @return 実行結果(非同期化した場合も帰る)@foreach{th : obj.throws}
 	 * @throws @{th}@end{}
 	 * @author vvakame
 	 */
-	public static @{obj.return} @{obj.name}(@{obj._args}) @{obj._throws} {
-		
-		try {
-	@if{obj.return == "void"}
-			@{className}.@{obj.name}(@{obj._call});
-	@else{}
-			return @{className}.@{obj.name}(@{obj._call});
-	@end{}
-		} catch (PersistentException e) {
-			DeferredTask deferred = new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
-			QueueFactory.getDefaultQueue().add(TaskOptions.Builder.withPayload(deferred));
-	@if{obj.return == "boolean"}
-			return (Boolean) e.getValue();
-	@else{obj.return == "char"}
-			return (Character) e.getValue();
-	@else{obj.return == "byte"}
-			return (Byte) e.getValue();
-	@else{obj.return == "short"}
-			return (Short) e.getValue();
-	@else{obj.return == "int"}
-			return (Integer) e.getValue();
-	@else{obj.return == "long"}
-			return (Long) e.getValue();
-	@else{obj.return == "float"}
-			return (Float) e.getValue();
-	@else{obj.return == "double"}
-			return (Double) e.getValue();
-	@else{obj.return == "void"}
-	@else{}
-			return e.getValue();
-	@end{}
-		}
+	public static DeferredTask @{obj.name}(@{obj._args}) {
+		return new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
 	}
 	@if{obj.extends == null}
 	static class Task_@{obj.name}_@{obj._underscore} implements DeferredTask {
