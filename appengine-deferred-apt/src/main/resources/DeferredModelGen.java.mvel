@@ -18,8 +18,7 @@ public class @{className}Deferred {
 	 * {@link @{className}} の同名メソッドの失敗時非同期化.
 	 * @foreach{p : obj.params}
 	 * @param @{p.name}@end{}
-	 * @return 実行結果(非同期化した場合も帰る)@foreach{th : obj.throws}
-	 * @throws @{th}@end{}
+	 * @return 実行結果(非同期化した場合も帰る)
 	 * @author vvakame
 	 */
 	public static DeferredTask @{obj.name}(@{obj._args}) {
