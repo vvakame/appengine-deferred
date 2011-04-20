@@ -4,7 +4,7 @@
 	<groupId>net.vvakame</groupId>
 	<artifactId>appengine-deferred-usage</artifactId>
 	<packaging>war</packaging>
-	<version>0.4-SNAPSHOT</version>
+	<version>0.4</version>
 
 	<properties>
 		<deferred.version>${version}</deferred.version>

@@ -1,5 +1,6 @@
 package net.vvakame.appengine.deferred.util;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +56,7 @@ public class DeferredUtil {
 	 * @author vvakame
 	 */
 	public static void post(DeferredTask deferred) {
+		logger.log(Level.FINEST, "add DeferredTask");
 		QueueFactory.getDefaultQueue().add(
 				TaskOptions.Builder.withPayload(deferred));
 	}
@@ -72,6 +74,7 @@ public class DeferredUtil {
 		if (isInTask()) {
 			throw e;
 		} else {
+			logger.log(Level.FINEST, "add DeferredTask, raise Exception.", e);
 			QueueFactory.getDefaultQueue().add(
 					TaskOptions.Builder.withPayload(deferred));
 		}
