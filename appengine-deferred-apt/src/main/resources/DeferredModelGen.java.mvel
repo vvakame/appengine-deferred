@@ -3,6 +3,9 @@ package @{packageName};
 import java.util.logging.Logger;
 
 import com.google.appengine.api.taskqueue.DeferredTask;
+import com.google.appengine.api.taskqueue.TaskOptions;
+
+import net.vvakame.appengine.deferred.util.DeferredUtil;
 
 /**
  * {@link @{className}} を遅延処理させる.
@@ -15,15 +18,39 @@ public class @{className}Deferred {
 
 @foreach{obj : methods}
 	/**
-	 * {@link @{className}} の同名メソッドの失敗時非同期化.
+	 * {@link @{className}} の同名メソッドの非同期化タスクの取得.
 	 * @foreach{p : obj.params}
 	 * @param @{p.name}@end{}
-	 * @return 実行結果(非同期化した場合も帰る)
+	 * @return 非同期化タスク
 	 * @author vvakame
 	 */
 	public static DeferredTask @{obj.name}(@{obj._args}) {
 		return new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
 	}
+
+	/**
+	 * {@link @{className}} の同名メソッドの {@link TaskOptions} の取得.
+	 * @foreach{p : obj.params}
+	 * @param @{p.name}@end{}
+	 * @return {@link TaskOptions}
+	 * @author vvakame
+	 */
+	public static TaskOptions @{obj.name}NewTask(@{obj._args}) {
+		DeferredTask deferred = new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
+		return TaskOptions.Builder.withPayload(deferred);
+	}
+
+	/**
+	 * {@link @{className}} の同名メソッドの非同期実行.
+	 * @foreach{p : obj.params}
+	 * @param @{p.name}@end{}
+	 * @author vvakame
+	 */
+	public static void @{obj.name}WithPost(@{obj._args}) {
+		DeferredTask deferred = new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
+		DeferredUtil.post(deferred);
+	}
+
 	@if{obj.extends == null}
 	static class Task_@{obj.name}_@{obj._underscore} implements DeferredTask {
 	@else{}
