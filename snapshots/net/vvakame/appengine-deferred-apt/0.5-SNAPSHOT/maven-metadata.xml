@@ -2,12 +2,11 @@
 <metadata>
   <groupId>net.vvakame</groupId>
   <artifactId>appengine-deferred-apt</artifactId>
-  <version>0.4-SNAPSHOT</version>
+  <version>0.5-SNAPSHOT</version>
   <versioning>
-    <versions>
-      <version>0.4-SNAPSHOT</version>
-      <version>0.5-SNAPSHOT</version>
-    </versions>
+    <snapshot>
+      <buildNumber>1</buildNumber>
+    </snapshot>
     <lastUpdated>20110421011845</lastUpdated>
   </versioning>
 </metadata>
