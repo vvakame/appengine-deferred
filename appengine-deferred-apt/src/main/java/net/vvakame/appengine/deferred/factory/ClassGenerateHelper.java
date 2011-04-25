@@ -33,7 +33,7 @@ import javax.tools.JavaFileObject;
 
 import net.vvakame.appengine.deferred.annotation.Deferred;
 import net.vvakame.appengine.deferred.factory.template.Template;
-import static net.vvakame.apt.AptUtil.*;
+import net.vvakame.appengine.deferred.factory.util.AptUtil;
 
 /**
  * アノテーション処理の本体.<br>
@@ -92,20 +92,20 @@ public class ClassGenerateHelper {
 	 */
 	public void process() {
 
-		g.setPackageName(getPackageName(classElement));
-		g.setClassName(getSimpleName(classElement));
+		g.setPackageName(AptUtil.getPackageName(classElement));
+		g.setClassName(AptUtil.getSimpleName(classElement));
 
-		List<Element> methods = getEnclosedElementsByAnnotation(classElement,
-				Deferred.class, ElementKind.METHOD);
+		List<Element> methods = AptUtil.getEnclosedElementsByAnnotation(
+				classElement, Deferred.class, ElementKind.METHOD);
 
 		for (Element methodElement : methods) {
 
 			ExecutableElement method = (ExecutableElement) methodElement;
 
-			if (isPrivate(methodElement)) {
+			if (AptUtil.isPrivate(methodElement)) {
 				encountError = true;
 				Log.e("private method can't use.", method);
-			} else if (!isStatic(method)) {
+			} else if (!AptUtil.isStatic(method)) {
 				encountError = true;
 				Log.e("method must be static.", method);
 			}
@@ -120,8 +120,8 @@ public class ClassGenerateHelper {
 			for (VariableElement var : method.getParameters()) {
 				ParameterModel p = new ParameterModel();
 				p.setType(var.asType().toString());
-				String simpleName = getSimpleName(processingEnv.getTypeUtils()
-						.erasure(var.asType()));
+				String simpleName = AptUtil.getSimpleName(processingEnv
+						.getTypeUtils().erasure(var.asType()));
 				if (simpleName.endsWith("[]")) {
 					simpleName = simpleName.substring(0,
 							simpleName.length() - 2) + "Array";

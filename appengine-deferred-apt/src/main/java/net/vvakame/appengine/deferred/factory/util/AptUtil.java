@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.vvakame.apt;
+package net.vvakame.appengine.deferred.factory.util;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -215,16 +215,34 @@ public class AptUtil {
 	 * @author vvakame
 	 */
 	public static String getSimpleName(TypeMirror tm) {
-		String str = tm.toString();
+		return getSimpleName(tm.toString());
+	}
+
+	/**
+	 * SimpleNameを取得する java.lang.String だったら String ←この部分.
+	 * 
+	 * @param tm
+	 * @return SimpleName
+	 * @author vvakame
+	 */
+	public static String getSimpleName(String str) {
 		int i = str.lastIndexOf(".");
 		int j = str.indexOf("<");
 		String result;
-		if (j == -1) {
+		if (i == -1 && j == -1) {
+			return str;
+		} else if (i == -1) {
+			result = str.substring(0, j);
+		} else if (j == -1) {
 			result = str.substring(i + 1);
 		} else {
 			result = str.substring(i + 1, j);
 		}
-		return result;
+		if (result.equals(str)) {
+			return result;
+		} else {
+			return getSimpleName(result);
+		}
 	}
 
 	/**

@@ -4,14 +4,14 @@
 
 	<groupId>net.vvakame</groupId>
 	<artifactId>appengine-deferred-core</artifactId>
-	<version>0.5-SNAPSHOT</version>
+	<version>0.5</version>
 
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>net.vvakame</groupId>
 		<artifactId>appengine-deferred-parent</artifactId>
-		<version>0.5-SNAPSHOT</version>
+		<version>0.5</version>
 	</parent>
 
 	<properties>

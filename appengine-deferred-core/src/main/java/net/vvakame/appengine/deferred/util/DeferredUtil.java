@@ -1,5 +1,6 @@
 package net.vvakame.appengine.deferred.util;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,6 +10,7 @@ import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.DeferredTaskContext;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
+import com.google.appengine.repackaged.com.google.common.collect.Lists;
 
 /**
  * 非同期化用ユーティリティ
@@ -77,6 +79,47 @@ public class DeferredUtil {
 			logger.log(Level.FINEST, "add DeferredTask, raise Exception.", e);
 			QueueFactory.getDefaultQueue().add(
 					TaskOptions.Builder.withPayload(deferred));
+		}
+	}
+
+	/**
+	 * {@link DeferredTask} たちを実行する.<br>
+	 * 何らかの例外が発生した場合、実行しきれなかったものはTQとして実行される(非同期実行時のタスクの処理順は不定)
+	 * 
+	 * @param deferreds
+	 * @author vvakame
+	 */
+	public static void run(List<DeferredTask> deferreds) {
+		List<TaskOptions> tasks = Lists.newArrayList();
+		for (DeferredTask deferred : deferreds) {
+			tasks.add(TaskOptions.Builder.withPayload(deferred));
+		}
+		while (deferreds.size() != 0) {
+			try {
+				deferreds.get(0).run();
+				deferreds.remove(0);
+				tasks.remove(0);
+			} catch (Exception e) {
+				QueueFactory.getDefaultQueue().add(tasks);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * {@link DeferredTask} を実行する.<br>
+	 * 何らかの例外が発生した場合、実行しきれなかったものはTQとして実行される
+	 * 
+	 * @param deferred
+	 * @author vvakame
+	 */
+	public static void run(DeferredTask deferred) {
+		TaskOptions task = TaskOptions.Builder.withPayload(deferred);
+
+		try {
+			deferred.run();
+		} catch (Exception e) {
+			QueueFactory.getDefaultQueue().add(task);
 		}
 	}
 }

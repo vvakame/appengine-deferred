@@ -76,6 +76,16 @@ public class SampleService1 {
 	/**
 	 * テスト用メソッド
 	 * 
+	 * @param map
+	 * @author vvakame
+	 */
+	@Deferred
+	public static void mapArgs(Key key, Map<Key, Long> map) {
+	}
+
+	/**
+	 * テスト用メソッド
+	 * 
 	 * @author vvakame
 	 * @throws ConcurrentModificationException
 	 */

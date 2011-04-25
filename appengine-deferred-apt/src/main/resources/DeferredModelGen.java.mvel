@@ -72,7 +72,9 @@ public class @{className}Deferred {
 		@Override
 		public void run() {
 		@foreach{param : obj.params}
-			logger.log(java.util.logging.Level.FINEST, "@{param.name}=" + String.valueOf(@{param.name}));
+			if(DeferredUtil.isInTask()){
+				logger.log(java.util.logging.Level.FINEST, "@{param.name}=" + String.valueOf(@{param.name}));
+			}
 		@end{}
 			try{
 				@{className}.@{obj.name}(@{obj._call});
@@ -88,7 +90,9 @@ public class @{className}Deferred {
 		@Override
 		public void delegate() @{obj._throws} {
 		@foreach{param : obj.params}
-			logger.log(java.util.logging.Level.FINEST, "@{param.name}=" + String.valueOf(@{param.name}));
+			if(DeferredUtil.isInTask()){
+				logger.log(java.util.logging.Level.FINEST, "@{param.name}=" + String.valueOf(@{param.name}));
+			}
 		@end{}
 			@{className}.@{obj.name}(@{obj._call});
 		}
