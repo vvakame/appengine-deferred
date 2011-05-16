@@ -71,11 +71,11 @@ public class @{className}Deferred {
 	@if{obj.extends == null}
 		@Override
 		public void run() {
-		@foreach{param : obj.params}
 			if(DeferredUtil.isInTask()){
+		@foreach{param : obj.params}
 				logger.log(java.util.logging.Level.FINEST, "@{param.name}=" + String.valueOf(@{param.name}));
-			}
 		@end{}
+			}
 			try{
 				@{className}.@{obj.name}(@{obj._call});
 			}catch(Exception e){
