@@ -15,6 +15,9 @@ import net.vvakame.appengine.deferred.util.DeferredUtil;
 public class @{className}Deferred {
 
 	static final Logger logger = Logger.getLogger(@{className}Deferred.class.getName());
+	
+	// Call Hierarchyで追えないと辛いので…。
+	static final boolean f = false;
 
 @foreach{obj : methods}
 	/**
@@ -25,7 +28,11 @@ public class @{className}Deferred {
 	 * @author vvakame
 	 */
 	public static DeferredTask @{obj.name}(@{obj._args}) {
-		return new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
+		Task_@{obj.name}_@{obj._underscore} deferred = new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
+		if(f){
+			deferred.run();
+		}
+		return deferred;
 	}
 
 	/**
@@ -36,7 +43,10 @@ public class @{className}Deferred {
 	 * @author vvakame
 	 */
 	public static TaskOptions @{obj.name}NewTask(@{obj._args}) {
-		DeferredTask deferred = new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
+		Task_@{obj.name}_@{obj._underscore} deferred = new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
+		if(f){
+			deferred.run();
+		}
 		return TaskOptions.Builder.withPayload(deferred);
 	}
 
@@ -47,7 +57,10 @@ public class @{className}Deferred {
 	 * @author vvakame
 	 */
 	public static void @{obj.name}WithPost(@{obj._args}) {
-		DeferredTask deferred = new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
+		Task_@{obj.name}_@{obj._underscore} deferred = new Task_@{obj.name}_@{obj._underscore}(@{obj._call});
+		if(f){
+			deferred.run();
+		}
 		DeferredUtil.post(deferred);
 	}
 
