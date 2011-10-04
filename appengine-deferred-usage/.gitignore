@@ -6,6 +6,7 @@ target/**
 build/**
 bin/**
 .apt_generated/**
+www-test/
 war/WEB-INF/appengine-generated/**
 war/WEB-INF/classes/
 war/WEB-INF/lib/appengine-*.jar

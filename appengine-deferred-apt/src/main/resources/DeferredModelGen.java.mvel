@@ -61,7 +61,7 @@ public class @{className}Deferred {
 		if(f){
 			deferred.run();
 		}
-		DeferredUtil.post(deferred);
+		DeferredUtil.post(@if{obj.queueName != null}"@{obj.queueName}" , @end{}deferred);
 	}
 
 	@if{obj.extends == null}

@@ -119,6 +119,19 @@ public class SampleService2Test extends AppEngineTestCase {
 		}
 	}
 
+	/**
+	 * 動作確認.
+	 * @author vvakame
+	 * @throws Exception 
+	 */
+	@Test
+	public void queueName指定有り() throws Exception {
+		SampleService2.queueName();
+
+		assertThat(tester.tasks.size(), is(1));
+		assertThat(tester.tasks.get(0).getQueueName(), is("test"));
+	}
+
 	static DeferredTask get(TaskQueueAddRequest tq) throws IOException, ClassNotFoundException {
 		ObjectInputStream ois =
 				new ObjectInputStream(new ByteArrayInputStream(tq.getBodyAsBytes()));

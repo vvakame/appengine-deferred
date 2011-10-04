@@ -1,13 +1,13 @@
 package net.vvakame.appengine.deferred.util;
 
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.DeferredTaskContext;
+import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.repackaged.com.google.common.collect.Lists;
@@ -58,27 +58,57 @@ public class DeferredUtil {
 	 * @author vvakame
 	 */
 	public static void post(DeferredTask deferred) {
-		logger.log(Level.FINEST, "add DeferredTask");
-		QueueFactory.getDefaultQueue().add(
-				TaskOptions.Builder.withPayload(deferred));
+		post(null, deferred);
+	}
+
+	/**
+	 * {@link DeferredTask} を TQに突っ込む
+	 * 
+	 * @param queueName
+	 * @param deferred
+	 * @author vvakame
+	 */
+	public static void post(String queueName, DeferredTask deferred) {
+		Queue queue;
+		if (queueName == null) {
+			queue = QueueFactory.getDefaultQueue();
+		} else {
+			queue = QueueFactory.getQueue(queueName);
+		}
+		queue.add(TaskOptions.Builder.withPayload(deferred));
 	}
 
 	/**
 	 * {@link DeferredTask} を TQに突っ込む.<br>
 	 * もし {@link DeferredTask} 実行中であれば、発生した例外を単にthrowする
 	 * 
+	 * @param queueName
 	 * @param deferred
+	 * @param e
 	 * @author vvakame
 	 * @throws Throwable
 	 */
 	public static <T extends Throwable> void post(DeferredTask deferred, T e)
 			throws T {
+		post(null, deferred, e);
+	}
+
+	/**
+	 * {@link DeferredTask} を TQに突っ込む.<br>
+	 * もし {@link DeferredTask} 実行中であれば、発生した例外を単にthrowする
+	 * 
+	 * @param queueName
+	 * @param deferred
+	 * @param e
+	 * @author vvakame
+	 * @throws Throwable
+	 */
+	public static <T extends Throwable> void post(String queueName,
+			DeferredTask deferred, T e) throws T {
 		if (isInTask()) {
 			throw e;
 		} else {
-			logger.log(Level.FINEST, "add DeferredTask, raise Exception.", e);
-			QueueFactory.getDefaultQueue().add(
-					TaskOptions.Builder.withPayload(deferred));
+			post(queueName, deferred);
 		}
 	}
 
@@ -90,6 +120,18 @@ public class DeferredUtil {
 	 * @author vvakame
 	 */
 	public static void run(List<DeferredTask> deferreds) {
+		run(null, deferreds);
+	}
+
+	/**
+	 * {@link DeferredTask} たちを実行する.<br>
+	 * 何らかの例外が発生した場合、実行しきれなかったものはTQとして実行される(非同期実行時のタスクの処理順は不定)
+	 * 
+	 * @param queueName
+	 * @param deferreds
+	 * @author vvakame
+	 */
+	public static void run(String queueName, List<DeferredTask> deferreds) {
 		List<TaskOptions> tasks = Lists.newArrayList();
 		for (DeferredTask deferred : deferreds) {
 			tasks.add(TaskOptions.Builder.withPayload(deferred));
@@ -100,7 +142,14 @@ public class DeferredUtil {
 				deferreds.remove(0);
 				tasks.remove(0);
 			} catch (Exception e) {
-				QueueFactory.getDefaultQueue().add(tasks);
+				Queue queue;
+				if (queueName == null) {
+					queue = QueueFactory.getDefaultQueue();
+				} else {
+					queue = QueueFactory.getQueue(queueName);
+				}
+
+				queue.add(tasks);
 				break;
 			}
 		}
@@ -114,12 +163,31 @@ public class DeferredUtil {
 	 * @author vvakame
 	 */
 	public static void run(DeferredTask deferred) {
+		run(null, deferred);
+	}
+
+	/**
+	 * {@link DeferredTask} を実行する.<br>
+	 * 何らかの例外が発生した場合、実行しきれなかったものはTQとして実行される
+	 * 
+	 * @param queueName
+	 * @param deferred
+	 * @author vvakame
+	 */
+	public static void run(String queueName, DeferredTask deferred) {
 		TaskOptions task = TaskOptions.Builder.withPayload(deferred);
 
 		try {
 			deferred.run();
 		} catch (Exception e) {
-			QueueFactory.getDefaultQueue().add(task);
+			Queue queue;
+			if (queueName == null) {
+				queue = QueueFactory.getDefaultQueue();
+			} else {
+				queue = QueueFactory.getQueue(queueName);
+			}
+
+			queue.add(task);
 		}
 	}
 }

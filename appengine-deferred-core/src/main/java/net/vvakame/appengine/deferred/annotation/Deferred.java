@@ -17,6 +17,8 @@ import net.vvakame.appengine.deferred.util.OwnDeferredTask;
 public @interface Deferred {
 	public Class<? extends OwnDeferredTask> task() default NullTask.class;
 
+	public String queueName() default "vv_default";
+
 	@SuppressWarnings("serial")
 	public static abstract class NullTask extends OwnDeferredTask {
 

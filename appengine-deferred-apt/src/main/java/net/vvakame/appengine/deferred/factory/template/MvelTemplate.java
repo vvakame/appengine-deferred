@@ -88,6 +88,7 @@ public class MvelTemplate {
 	private static Map<String, Object> convMethodElementToMap(MethodModel method) {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		map.put("extends", method.getExtendsClass());
+		map.put("queueName", method.getQueueName());
 		map.put("name", method.getName());
 		List<Map<String, Object>> params = new ArrayList<Map<String, Object>>();
 		for (ParameterModel param : method.getParams()) {

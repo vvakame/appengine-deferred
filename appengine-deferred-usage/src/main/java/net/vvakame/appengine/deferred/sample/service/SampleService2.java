@@ -300,4 +300,13 @@ public class SampleService2 {
 			DeferredUtil.post(deferred);
 		}
 	}
+
+	/**
+	 * 動作確認
+	 * @author vvakame
+	 */
+	@Deferred(queueName = "test")
+	public static void queueName() {
+		SampleService2Deferred.queueNameWithPost();
+	}
 }

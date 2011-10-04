@@ -112,8 +112,8 @@ public class ClassGenerateHelper {
 
 			MethodModel m = new MethodModel();
 
-			String task = getDeferredTaskClassName(method);
-			m.setExtendsClass(task);
+			m.setExtendsClass(getDeferredTaskClassName(method));
+			m.setQueueName(getQueueName(method));
 
 			m.setName(method.getSimpleName().toString());
 
@@ -164,6 +164,31 @@ public class ClassGenerateHelper {
 				result = tmp.substring(0, i);
 			} else {
 				result = tmp;
+			}
+		}
+
+		return result;
+	}
+
+	String getQueueName(Element el) {
+
+		AnnotationValue task = null;
+
+		for (AnnotationMirror am : el.getAnnotationMirrors()) {
+			Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = am
+					.getElementValues();
+			for (ExecutableElement e : elementValues.keySet()) {
+				if ("queueName".equals(e.getSimpleName().toString())) {
+					task = elementValues.get(e);
+				}
+			}
+		}
+
+		String result = null;
+		if (task != null) {
+			String value = (String) task.getValue();
+			if (!"vv_default".equals(value)) {
+				result = value;
 			}
 		}
 

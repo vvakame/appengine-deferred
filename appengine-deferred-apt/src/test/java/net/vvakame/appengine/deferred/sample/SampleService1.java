@@ -193,4 +193,15 @@ public class SampleService1 {
 	public static Double returnDouble() {
 		return 0.0;
 	}
+
+	/**
+	 * テスト用メソッド
+	 * 
+	 * @return 適当
+	 * @author vvakame
+	 */
+	@Deferred(queueName = "test")
+	public static String queueName() {
+		return "test";
+	}
 }

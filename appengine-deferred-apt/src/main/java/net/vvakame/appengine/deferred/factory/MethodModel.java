@@ -36,6 +36,8 @@ public class MethodModel {
 
 	String extendsClass = "";
 
+	String queueName;
+
 	/**
 	 * @return the name
 	 * @category accessor
@@ -119,5 +121,22 @@ public class MethodModel {
 	 */
 	public void setExtendsClass(String extendsClass) {
 		this.extendsClass = extendsClass;
+	}
+
+	/**
+	 * @return the queueName
+	 * @category accessor
+	 */
+	public String getQueueName() {
+		return queueName;
+	}
+
+	/**
+	 * @param queueName
+	 *            the queueName to set
+	 * @category accessor
+	 */
+	public void setQueueName(String queueName) {
+		this.queueName = queueName;
 	}
 }
