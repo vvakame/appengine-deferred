@@ -2,13 +2,11 @@
 <metadata>
   <groupId>net.vvakame</groupId>
   <artifactId>appengine-deferred-core</artifactId>
-  <version>0.4-SNAPSHOT</version>
+  <version>0.8-SNAPSHOT</version>
   <versioning>
-    <versions>
-      <version>0.4-SNAPSHOT</version>
-      <version>0.5-SNAPSHOT</version>
-      <version>0.8-SNAPSHOT</version>
-    </versions>
+    <snapshot>
+      <buildNumber>1</buildNumber>
+    </snapshot>
     <lastUpdated>20111004064918</lastUpdated>
   </versioning>
 </metadata>
